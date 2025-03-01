@@ -1,5 +1,5 @@
 kafka-python
-apache-flink  # Replaced 'flink' with 'apache-flink'
+apache-flink
 pyspark
 tensorflow
 mlflow
@@ -35,5 +35,5 @@ alibi
 prometheus-client
 
 # MLOps & Model Deployment
-tensorflow-serving-api  # Ensure this matches the TensorFlow version
-ray[serve]  # Installed separately
+tensorflow-serving-api
+ray[serve]
