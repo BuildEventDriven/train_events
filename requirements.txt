@@ -32,7 +32,6 @@ feast
 # Monitoring & Explainability
 shap
 alibi
-whylabs
 prometheus-client
 
 # MLOps & Model Deployment
