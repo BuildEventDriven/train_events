@@ -1,5 +1,5 @@
 kafka-python
-flink
+apache-flink
 pyspark
 tensorflow
 mlflow
@@ -10,7 +10,6 @@ ruff
 black
 
 # Google Cloud Dependencies
-google-cloud-sdk
 google-cloud-storage
 google-cloud-pubsub
 google-cloud-bigquery
@@ -33,10 +32,8 @@ feast
 # Monitoring & Explainability
 shap
 alibi
-whylabs
 prometheus-client
 
 # MLOps & Model Deployment
 tensorflow-serving-api
-ray
 ray[serve]
