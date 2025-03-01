@@ -1,5 +1,5 @@
 kafka-python
-flink
+apache-flink  # Replaced 'flink' with 'apache-flink'
 pyspark
 tensorflow
 mlflow
@@ -10,7 +10,6 @@ ruff
 black
 
 # Google Cloud Dependencies
-google-cloud-sdk
 google-cloud-storage
 google-cloud-pubsub
 google-cloud-bigquery
@@ -37,6 +36,5 @@ whylabs
 prometheus-client
 
 # MLOps & Model Deployment
-tensorflow-serving-api
-ray
-ray[serve]
+tensorflow-serving-api  # Ensure this matches the TensorFlow version
+ray[serve]  # Installed separately

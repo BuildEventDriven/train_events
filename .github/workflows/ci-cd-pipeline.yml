@@ -11,6 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: debian:bookworm  # Run all steps inside a Debian 12 (Bookworm) container
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -40,7 +41,7 @@ jobs:
         run: gh workflow run ci-google-auth.yml || true  # Ensures it doesn't fail the pipeline
 
       - name: Run Ruff Linter
-        run: ruff .  # Runs ruff on all Python files.
+        run: python -m ruff .  # Runs ruff on all Python files.
 
       - name: Auto-Fix Formatting with Black (if running manually)
         if: github.event_name == 'pull_request'
