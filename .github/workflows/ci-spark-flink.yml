@@ -1,0 +1,22 @@
+name: Spark & Flink Setup
+
+on:
+  push:
+    paths:
+      - 'spark/**'
+      - 'flink/**'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  setup-spark-flink:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Apache Spark & Flink
+        run: |
+          wget -qO - https://archive.apache.org/dist/spark/spark-3.3.0/spark-3.3.0-bin-hadoop3.tgz | tar xz
+          echo "export SPARK_HOME=$(pwd)/spark-3.3.0-bin-hadoop3" >> $GITHUB_ENV
+          wget -qO - https://archive.apache.org/dist/flink/flink-1.15.2-bin-scala_2.12.tgz | tar xz
+          echo "export FLINK_HOME=$(pwd)/flink-1.15.2" >> $GITHUB_ENV

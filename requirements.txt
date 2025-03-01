@@ -5,3 +5,38 @@ tensorflow
 mlflow
 whylogs
 grpcio
+pytest
+ruff
+black
+
+# Google Cloud Dependencies
+google-cloud-sdk
+google-cloud-storage
+google-cloud-pubsub
+google-cloud-bigquery
+google-cloud-secret-manager
+google-auth
+google-auth-oauthlib
+
+# ML & Deep Learning
+torch
+onnxruntime
+xgboost
+scikit-learn
+transformers
+
+# Streaming & Batch Processing
+confluent-kafka
+delta-spark
+feast
+
+# Monitoring & Explainability
+shap
+alibi
+whylabs
+prometheus-client
+
+# MLOps & Model Deployment
+tensorflow-serving-api
+ray
+ray[serve]
