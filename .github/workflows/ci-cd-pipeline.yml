@@ -56,7 +56,7 @@ jobs:
         run: gh workflow run ci-google-auth.yml || true  # Ensures it doesn't fail the pipeline
 
       - name: Run Ruff Linter
-        run: python -m ruff .  # Runs ruff on all Python files.
+        run: python -m ruff check .  # Runs ruff on all Python files.
 
       - name: Auto-Fix Formatting with Black (if running manually)
         if: github.event_name == 'pull_request'
