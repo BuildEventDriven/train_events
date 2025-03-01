@@ -6,12 +6,12 @@ It leverages **Kafka, Flink, Argo CD, and GitHub Actions** to streamline model d
 
 ## **🚀 Quick Start**
 
-### **1️⃣ Setup the Repository**
+### **1️⃣ Clone the repository to your local machine.**
 Ensure you have the required permissions before running the setup scripts.
 
 ```sh
-chmod +x setup_repo.sh
-./setup_repo.sh
+git clone https://github.com/BuildEventDriven/train_events.git
+cd train_events
 ```
 
 ### **2️⃣ Setup the Environment**
@@ -36,6 +36,7 @@ This repository uses **GitHub Actions**
   		- .github/workflows/ci-google-auth.yml
   		- .github/workflows/ci-prometheus.yml
   		- .github/workflows/ci-spark-flink.yml
+
 ---
 
 ## **📌 Contribution Guidelines**
