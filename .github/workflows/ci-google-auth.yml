@@ -1,0 +1,27 @@
+name: Google Cloud Authentication
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ci-google-auth.yml'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  setup-google-auth:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Authenticate with Google Cloud
+        continue-on-error: true  # Ensures build continues even if auth fails
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "${{ secrets.GCP_SA_KEY }}" ]; then
+            echo "Skipping authentication: No GCP_SA_KEY provided"
+            exit 0
+          fi
+          echo "${{ secrets.GCP_SA_KEY }}" > gcp-key.json
+          gcloud auth activate-service-account --key-file=gcp-key.json
+          gcloud config set project ${{ secrets.GCP_PROJECT }}
