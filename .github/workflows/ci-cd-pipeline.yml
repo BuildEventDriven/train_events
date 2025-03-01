@@ -10,8 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container: debian:bookworm  # Run all steps inside a Debian 12 (Bookworm) container
+    runs-on: ubuntu-22.04 # Keeping it locked in to 22.04, avoiding any update issues when happens on GitHub's side. 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
