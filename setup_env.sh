@@ -3,23 +3,34 @@
 # Exit on error
 set -e
 
+echo "Ensuring Python 3.11 is installed..."
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    sudo apt update && sudo apt install -y python3.11 python3.11-venv python3.11-dev
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install python@3.11
+fi
+
+echo "Ensuring wget is installed..."
+if ! command -v wget &> /dev/null; then
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sudo apt update && sudo apt install -y wget
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        brew install wget
+    fi
+fi
+
+
 # Define virtual environment directory
 VENV_DIR="venv"
 
 echo "Setting up virtual environment..."
-# Create virtual environment if not exists
+# Create virtual environment with Python 3.11
 if [ ! -d "$VENV_DIR" ]; then
-    python3 -m venv $VENV_DIR
+    python3.11 -m venv $VENV_DIR
 fi
 
 # Activate virtual environment
 source $VENV_DIR/bin/activate
-
-echo "Upgrading pip..."
-pip install --upgrade pip
-
-echo "Pre-installing required build dependencies..."
-pip install numpy pytest setuptools wheel
 
 echo "Installing local development & testing libraries..."
 pip install \
@@ -28,12 +39,24 @@ pip install \
     ruff \
     mypy \
     ipython \
-    pre-commit \
-    direnv
+    pre-commit
 
+echo "Upgrading pip..."
+pip install --upgrade pip
+
+echo "Pre-installing required build dependencies..."
+pip install numpy pytest setuptools wheel
+
+echo "Installing system dependencies..."
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    sudo apt-get update && sudo apt-get install -y direnv
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install direnv
+fi
+
+# GCP
 echo "Installing GCP-specific libraries..."
 pip install \
-    google-cloud-cli \
     google-cloud-storage \
     google-cloud-pubsub \
     google-cloud-bigquery \
@@ -41,20 +64,66 @@ pip install \
     google-auth \
     google-auth-oauthlib
 
+echo "Installing Google Cloud CLI..."
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    sudo apt-get update && sudo apt-get install -y google-cloud-cli
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install --cask google-cloud-sdk
+fi
+
+# KAFKA AND AI/ML
+echo "Checking Python version..."
+python --version
+
+echo "Skipping local TensorFlow and Python Kafka installation since inference will run remotely."
+
+if [[ "$IS_REMOTE_ENV" == "true" ]]; then
+    echo "Installing TensorFlow and Python Kafka on remote compute..."
+    if [[ "$(uname -m)" == "arm64" && "$OSTYPE" == "darwin"* ]]; then
+        pip install tensorflow-macos tensorflow-metal
+        pip install kafka-python
+        pip install alibi
+
+
+    else
+        pip install tensorflow
+    fi
+fi
+
 echo "Installing AI/ML & streaming tools..."
+
+echo "Installing pre-requisites for building dependencies..."
+# pip install setuptools wheel numpy cython
+
 pip install \
-    kafka-python \
-    apache-flink \
-    tensorflow \
     mlflow \
     whylogs \
     grpcio \
     shap \
-    alibi \
     feast \
     xgboost \
     scikit-learn \
-    onnxruntime
+    onnxruntime \
+
+echo "Installing Apache Flink..."
+FLINK_VERSION="1.20.1"
+FLINK_DIR="/opt/flink"
+
+# Download and extract Flink
+if [[ ! -d "$FLINK_DIR" ]]; then
+    wget -q "https://dlcdn.apache.org/flink/flink-$FLINK_VERSION/flink-$FLINK_VERSION-bin-scala_2.12.tgz"
+    tar -xzf "flink-$FLINK_VERSION-bin-scala_2.12.tgz"
+    sudo mv "flink-$FLINK_VERSION" "$FLINK_DIR"
+    rm "flink-$FLINK_VERSION-bin-scala_2.12.tgz"
+fi
+
+# Add Flink to PATH
+echo "export FLINK_HOME=$FLINK_DIR" >> ~/.bashrc
+echo "export PATH=\$FLINK_HOME/bin:\$PATH" >> ~/.bashrc
+source ~/.bashrc
+
+echo "Apache Flink installed successfully."
+
 
 echo "Setting up pre-commit hooks..."
 pre-commit install
