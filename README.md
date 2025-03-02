@@ -1,25 +1,60 @@
-# train_events
-Training ML/AI with an event-driven ecosystem
+# **Training ML/AI with an Event-Driven Ecosystem**
 
-Change directory to to root/
-sh: chmod +x setup_repo.sh
-sh: ./setup_repo.sh
+It leverages **Kafka, Flink, Argo CD, and GitHub Actions** to streamline model deployment, scaling, and monitoring.
 
+---
 
-CI/CD Mapping: 
-.github/workflows/ci-cd-pipeline.yml  # GitHub Actions workflows stay here
+## **🚀 Quick Start**
 
-ci-cd/
- ├── argo-cd/  
- │   ├── deployment.yaml  # Argo CD deployment flows
- │   ├── application.yaml  # Argo app definitions (optional)
- │   ├── sync-cronjob.yaml  # Auto-sync Argo apps (optional)
- │
- ├── kubeflow-pipelines/  
- │   ├── pipeline.yaml  # Kubeflow ML pipeline definitions
- │   ├── schedule.yaml  # Pipeline automation via Argo/Kubeflow
- │
- ├── server-ci-cd/  
- │   ├── compute-scaler.yaml  # Auto-scaling GCP compute nodes
- │   ├── broker-restart.yaml  # Restart Kafka brokers when needed
- │   ├── monitoring-flows.yaml  # Trigger monitoring jobs (Grafana, WhyLogs)
+### **1️⃣ Clone the repository to your local machine.**
+Ensure you have the required permissions before running the setup scripts.
+
+```sh
+git clone https://github.com/BuildEventDriven/train_events.git
+cd train_events
+```
+
+### **2️⃣ Setup the Environment**
+Initialize the environment variables and dependencies.
+
+```sh
+chmod +x setup_env.sh
+./setup_env.sh
+```
+
+---
+
+## **📌 CI/CD Pipeline Overview**
+## Active
+This repository uses **GitHub Actions**
+
+### **🔄 CI/CD Workflow Mapping**
+- **GitHub Actions Workflows**  
+  - Located in: `.github/workflows/ci-cd-pipeline.yml`
+  - Manages code integration, testing, and deployment.
+  - It triggers tool-specific pipelines: 
+  		- .github/workflows/ci-google-auth.yml
+  		- .github/workflows/ci-prometheus.yml
+  		- .github/workflows/ci-spark-flink.yml
+
+---
+
+## **📌 Contribution Guidelines**
+- Fork the repository.
+- Create a new branch (`feature-branch`).
+- Commit changes and push them.
+- Submit a pull request.
+
+---
+
+## **🔧 Troubleshooting**
+If you encounter any issues, check the logs or raise an issue in the repository.
+
+---
+
+## **👨‍💻 Maintainers**
+- **Karan Patel** - _Primary Maintainer_  
+- **Other Contributors** - LOOKING FOR SOME LOVE :D  
+
+For queries, open an issue or reach out via email. 
+Email: buildeventdriven@gmail.com
