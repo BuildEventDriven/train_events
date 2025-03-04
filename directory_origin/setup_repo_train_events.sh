@@ -45,6 +45,11 @@ touch scripts/data-simulator.py
 touch scripts/benchmark-tests.py
 touch .gitignore
 touch README.md
+touch terraform-scripts/main.tf
+touch terraform-scripts/variables.tf
+touch terraform-scripts/outputs.tf
+touch terraform-scripts/terraform.tfvars
+touch terraform-scripts/provider.tf
 
 cat <<EOL > .pre-commit-config.yaml
 repos:
@@ -62,7 +67,6 @@ repos:
         args: [--fix]
       # Run the formatter
       - id: ruff-format
-
 EOL
 
 # Create requirements.txt (Example Python dependencies)
@@ -106,14 +110,12 @@ prometheus-client
 # MLOps & Model Deployment
 tensorflow-serving-api
 ray[serve]
-
 EOL
 
 # Create tests directory and a sample test file
 cat <<EOL > tests/test_sample.py
 def test_example():
     assert 1 + 1 == 2
-
 EOL
 # Create GitHub Actions CI/CD Pipeline YAML
 cat <<EOL > .github/workflows/ci-spark-flink.yml
@@ -139,7 +141,6 @@ jobs:
           echo "export SPARK_HOME=$(pwd)/spark-3.3.0-bin-hadoop3" >> $GITHUB_ENV
           wget -qO - https://archive.apache.org/dist/flink/flink-1.15.2-bin-scala_2.12.tgz | tar xz
           echo "export FLINK_HOME=$(pwd)/flink-1.15.2" >> $GITHUB_ENV
-
 EOL
 
 # Create GitHub Actions CI/CD Pipeline YAML
@@ -165,7 +166,6 @@ jobs:
           tar xvfz prometheus-*.tar.gz
           cd prometheus-*
           ./prometheus --config.file=prometheus.yml &
-
 EOL
 
 # Create GitHub Actions CI/CD Pipeline YAML
@@ -197,7 +197,6 @@ jobs:
           echo "${{ secrets.GCP_SA_KEY }}" > gcp-key.json
           gcloud auth activate-service-account --key-file=gcp-key.json
           gcloud config set project ${{ secrets.GCP_PROJECT }}
-
 EOL
 
 
@@ -269,7 +268,13 @@ jobs:
 
       - name: Run Tests
         run: pytest tests/ || true  # Allows test failures but pipeline continues
-        
+
+      - name: Install Google Cloud CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-cloud-cli
+          gcloud --version
+      
 EOL
 
 # Initialize Git repo
@@ -458,5 +463,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-
 EOL
